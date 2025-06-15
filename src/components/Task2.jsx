@@ -1,4 +1,3 @@
-// src/Task2.jsx
 import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
