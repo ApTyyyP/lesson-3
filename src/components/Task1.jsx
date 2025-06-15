@@ -27,9 +27,9 @@ function Task1() {
   const [boysList, setBoysList] = useState([...boysData]);
   const [girlsList, setGirlsList] = useState([...girlsData]);
   const [pairsList, setPairsList] = useState([]);
-  const [isBoySelected, setBoySel] = useState(null);
-  const [isGirlSelected, setGirlSel] = useState(null);
-  const [isPairSelected, setPairSel] = useState(null);
+  const [selectedBoyIndex, setBoySel] = useState(null);
+  const [selectedGirlIndex, setGirlSel] = useState(null);
+  const [selectedPairIndex, setPairSel] = useState(null);
 
   const onSelectItem = (index, type) => {
     if (type === 'boy') setBoySel((prev) => (prev === index ? null : index));
@@ -39,17 +39,17 @@ function Task1() {
 
   // додавання пари
   const onAddPair = () => {
-    if (isBoySelected === null || isGirlSelected === null) return;
+    if (selectedBoyIndex === null || selectedGirlIndex === null) return;
 
-    const boy = boysList[isBoySelected];
-    const girl = girlsList[isGirlSelected];
+    const boy = boysList[selectedBoyIndex];
+    const girl = girlsList[selectedGirlIndex];
 
     // додаємо пару до списку
     setPairsList((prev) => [...prev, { boyName: boy.name, girlName: girl.name }]);
 
     // видаляємо вибрані з доступних списків
-    setBoysList((prev) => prev.filter((_, i) => i !== isBoySelected));
-    setGirlsList((prev) => prev.filter((_, i) => i !== isGirlSelected));
+    setBoysList((prev) => prev.filter((_, i) => i !== selectedBoyIndex));
+    setGirlsList((prev) => prev.filter((_, i) => i !== selectedGirlIndex));
 
     // скидаємо вибір
     setBoySel(null);
@@ -58,15 +58,15 @@ function Task1() {
 
   // видалення пари
   const onDeletePair = () => {
-    if (isPairSelected === null) return;
+    if (selectedPairIndex === null) return;
 
-    setPairsList((prev) => prev.filter((_, i) => i !== isPairSelected));
+    setPairsList((prev) => prev.filter((_, i) => i !== selectedPairIndex));
     setPairSel(null);
   };
 
   // блокування кнопок
-  const btnAddDisabled = isBoySelected === null || isGirlSelected === null;
-  const btnDeleteDisabled = isPairSelected === null;
+  const btnAddDisabled = selectedBoyIndex === null || selectedGirlIndex === null;
+  const btnDeleteDisabled = selectedPairIndex === null;
 
   return (
     <div className="task-1">
@@ -92,7 +92,7 @@ function Task1() {
                   {boysList.map((boy, index) => (
                     <li
                       key={boy.boyId}
-                      className={`boys__item ${isBoySelected === index ? 'chosen' : ''}`}
+                      className={`boys__item ${selectedBoyIndex === index ? 'chosen' : ''}`}
                       onClick={() => onSelectItem(index, 'boy')}
                     >
                       {boy.name}
@@ -115,7 +115,7 @@ function Task1() {
                   {girlsList.map((girl, index) => (
                     <li
                       key={girl.girlId}
-                      className={`girls__item ${isGirlSelected === index ? 'chosen' : ''}`}
+                      className={`girls__item ${selectedGirlIndex === index ? 'chosen' : ''}`}
                       onClick={() => onSelectItem(index, 'girl')}
                     >
                       {girl.name}
@@ -145,7 +145,7 @@ function Task1() {
                     {pairsList.map((pair, index) => (
                       <li
                         key={index}
-                        className={`pair__item ${isPairSelected === index ? 'chosen' : ''}`}
+                        className={`pair__item ${selectedPairIndex === index ? 'chosen' : ''}`}
                         onClick={() => onSelectItem(index, 'pair')}
                       >
                         {pair.boyName} — {pair.girlName}
